@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.weldes.cursomc.domain.Categoria;
-import com.weldes.cursomc.services.CategoriaService;
+import com.weldes.cursomc.domain.Cidade;
+import com.weldes.cursomc.services.CidadeService;
 
 @RestController
-@RequestMapping(value="/categorias/")
-public class CategoriaResource {
+@RequestMapping(value="/cidades/")
+public class CidadeResource {
 	
 	@Autowired
-	private CategoriaService service;
+	private CidadeService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	
-	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
+	public ResponseEntity<Cidade> find(@PathVariable Integer id) {
 		
-		Categoria obj = service.buscar(id);
+		Cidade obj = service.buscar(id);
 		
 		return ResponseEntity.ok().body(obj);
 	}
