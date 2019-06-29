@@ -3,6 +3,7 @@ package com.weldes.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Service;
 
 import com.weldes.cursomc.domain.Categoria;
@@ -20,6 +21,11 @@ public class CategoriaService {
 		Optional<Categoria> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não Encontrado! Id:" +id +" ,Tipo: "+ Categoria.class.getName()));
+	}
+
+	public Categoria insert(Categoria obj) {
+		obj.setId(null);
+		return repo.save(obj);
 	}
 
 }
