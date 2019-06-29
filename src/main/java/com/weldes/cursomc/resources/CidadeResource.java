@@ -21,7 +21,7 @@ public class CidadeResource {
 	
 	public ResponseEntity<Cidade> find(@PathVariable Integer id) {
 		
-		Cidade obj = service.buscar(id);
+		Cidade obj = service.find(id);
 		
 		return ResponseEntity.ok().body(obj);
 	}
