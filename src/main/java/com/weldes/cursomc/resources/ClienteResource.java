@@ -25,7 +25,7 @@ import com.weldes.cursomc.services.ClienteService;
 
 
 @RestController
-@RequestMapping(value="/clientes/")
+@RequestMapping(value="/clientes")
 public class ClienteResource {
 	
 	@Autowired

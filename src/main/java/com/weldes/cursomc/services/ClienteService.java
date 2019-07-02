@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.weldes.cursomc.domain.Cliente;
-import com.weldes.cursomc.domain.enums.TipoCliente;
-import com.weldes.cursomc.domain.Cliente;
 import com.weldes.cursomc.dto.ClienteDTO;
 import com.weldes.cursomc.repositories.ClienteRepository;
 import com.weldes.cursomc.services.exceptions.DateIntegrityException;
