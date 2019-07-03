@@ -17,32 +17,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.miklus.holly.domain.Categoria;
-import br.com.miklus.holly.domain.Cliente;
-import br.com.miklus.holly.dto.CategoriaDTO;
-import br.com.miklus.holly.dto.ClienteDTO;
-import br.com.miklus.holly.services.ClienteService;
-
+import br.com.miklus.holly.domain.Ministerio;
+import br.com.miklus.holly.dto.MinisterioDTO;
+import br.com.miklus.holly.services.MinisterioService;
 
 @RestController
-@RequestMapping(value="/clientes")
-public class ClienteResource {
-	
+@RequestMapping(value = "/ministerios/")
+public class MinisterioResource {
+
 	@Autowired
-	private ClienteService service;
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	
-	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
-		
-		Cliente obj = service.find(id);
-		
+	private MinisterioService service;
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Ministerio> find(@PathVariable Integer id) {
+
+		Ministerio obj = service.find(id);
+
 		return ResponseEntity.ok().body(obj);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDto) {
-		Cliente obj = service.fromDTO(objDto);
+	public ResponseEntity<Void> insert(@Valid @RequestBody MinisterioDTO objDto) {
+		Ministerio obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -51,8 +47,8 @@ public class ClienteResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-		Cliente obj = service.fromDTO(objDto);
+	public ResponseEntity<Void> update(@Valid @RequestBody MinisterioDTO objDto, @PathVariable Integer id) {
+		Ministerio obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
@@ -66,21 +62,21 @@ public class ClienteResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ClienteDTO>> findAll() {
-		List<Cliente> list=service.findAll();
-		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
+	public ResponseEntity<List<MinisterioDTO>> findAll() {
+		List<Ministerio> list=service.findAll();
+		List<MinisterioDTO> listDto = list.stream().map(obj -> new MinisterioDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	
 	@RequestMapping(value ="/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<ClienteDTO>> findPage(
+	public ResponseEntity<Page<MinisterioDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0")Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24")Integer linesPerPage, 
 			@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC")String direction) {
-		Page<Cliente> list=service.findPage(page, linesPerPage, orderBy, direction);
-		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj));
+		Page<Ministerio> list=service.findPage(page, linesPerPage, orderBy, direction);
+		Page<MinisterioDTO> listDto = list.map(obj -> new MinisterioDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
 

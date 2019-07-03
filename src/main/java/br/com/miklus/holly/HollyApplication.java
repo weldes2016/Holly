@@ -10,25 +10,27 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.miklus.holly.domain.Categoria;
 import br.com.miklus.holly.domain.Cidade;
-import br.com.miklus.holly.domain.Cliente;
 import br.com.miklus.holly.domain.Endereco;
 import br.com.miklus.holly.domain.Estado;
 import br.com.miklus.holly.domain.ItemPedido;
+import br.com.miklus.holly.domain.Ministerio;
 import br.com.miklus.holly.domain.Pagamento;
 import br.com.miklus.holly.domain.PagamentoComBoleto;
 import br.com.miklus.holly.domain.PagamentoComCartao;
 import br.com.miklus.holly.domain.Pedido;
+import br.com.miklus.holly.domain.Pessoa;
 import br.com.miklus.holly.domain.Produto;
 import br.com.miklus.holly.domain.enums.EstadoPagamento;
 import br.com.miklus.holly.domain.enums.TipoCliente;
 import br.com.miklus.holly.repositories.CategoriaRepository;
 import br.com.miklus.holly.repositories.CidadeRepository;
-import br.com.miklus.holly.repositories.ClienteRepository;
 import br.com.miklus.holly.repositories.EnderecoRepository;
 import br.com.miklus.holly.repositories.EstadoRepository;
 import br.com.miklus.holly.repositories.ItemPedidoRepository;
+import br.com.miklus.holly.repositories.MinisterioRepository;
 import br.com.miklus.holly.repositories.PagamentoRepository;
 import br.com.miklus.holly.repositories.PedidoRepository;
+import br.com.miklus.holly.repositories.PessoaRepository;
 import br.com.miklus.holly.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -50,7 +52,7 @@ public class HollyApplication implements CommandLineRunner {
 	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
-	private ClienteRepository clienteRepository;
+	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
@@ -61,6 +63,10 @@ public class HollyApplication implements CommandLineRunner {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 
+	@Autowired
+	private MinisterioRepository ministerioRepository;
+	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(HollyApplication.class, args);
 	}
@@ -81,8 +87,6 @@ public class HollyApplication implements CommandLineRunner {
 		Produto p2 = new Produto(null, "Impressora", 800.00);
 		Produto p3 = new Produto(null, "Mouse", 80.00);
 
-		
-		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
 
@@ -107,21 +111,21 @@ public class HollyApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@miklus.com.br", "61900320100", TipoCliente.PESSOAFISICA);
-		cli1.getTelefones().addAll(Arrays.asList("39565500","982592220"));
+		Pessoa pes1 = new Pessoa(null, "Maria Silva", "maria@miklus.com.br", "61900320100", TipoCliente.PESSOAFISICA);
+		pes1.getTelefones().addAll(Arrays.asList("39565500","982592220"));
 		
-		Endereco e1 = new Endereco(null,"Rua Flores", "200","Qd 436, Lt. 01", "Jardim Amercia", "74250-010",cli1, c1);
-		Endereco e2 = new Endereco(null,"Av. Matos", "105","Qd 436, Lt. 01", "Jardim Amercia", "74250-010",cli1, c2);
+		Endereco e1 = new Endereco(null,"Rua Flores", "200","Qd 436, Lt. 01", "Jardim Amercia", "74250-010",pes1, c1);
+		Endereco e2 = new Endereco(null,"Av. Matos", "105","Qd 436, Lt. 01", "Jardim Amercia", "74250-010",pes1, c2);
 		
-		cli1.getEndereco().addAll(Arrays.asList(e1,e2));
+		pes1.getEndereco().addAll(Arrays.asList(e1));
 		
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		pessoaRepository.saveAll(Arrays.asList(pes1));
+		enderecoRepository.saveAll(Arrays.asList(e1));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
-		Pedido ped1 = new Pedido(null, sdf.parse("28/06/2019 10:35"), cli1, e1);
-		Pedido ped2 = new Pedido(null, sdf.parse("28/06/2019 10:40"), cli1, e2);
+		Pedido ped1 = new Pedido(null, sdf.parse("28/06/2019 10:35"), pes1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("28/06/2019 10:40"), pes1,null);
 		
 		Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 		ped1.setPagamento(pgto1);
@@ -129,7 +133,7 @@ public class HollyApplication implements CommandLineRunner {
 		Pagamento pgto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("28/06/2019 10:41"),null );
 		ped2.setPagamento(pgto2);
 		
-		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		pes1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
@@ -146,6 +150,21 @@ public class HollyApplication implements CommandLineRunner {
 		p3.getItens().addAll(Arrays.asList(ip2));
 		
 		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		
+		Ministerio min1 = new Ministerio( null, "Pastoreio");
+		
+		ministerioRepository.saveAll(Arrays.asList(min1));	
+		
+		pes1.getTelefones().addAll(Arrays.asList("39565500","982592220"));
+		
+		Endereco endcli1 = new Endereco(null,"Rua Flores", "200","Qd 436, Lt. 01", "Jardim Amercia", "74250-010",pes1, c2);
+		Endereco endcli2 = new Endereco(null,"Av. Matos", "105","Qd 436, Lt. 01", "Jardim Amercia", "74250-010", pes1, c1);
+		
+		pes1.getEndereco().addAll(Arrays.asList(e1,e2));
+		
+		pessoaRepository.saveAll(Arrays.asList(pes1));
+		enderecoRepository.saveAll(Arrays.asList(endcli1, endcli2));
+		
 		
 	}
 

@@ -6,11 +6,9 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import br.com.miklus.holly.domain.Categoria;
-import br.com.miklus.holly.domain.Cliente;
-import br.com.miklus.holly.domain.enums.TipoCliente;
+import br.com.miklus.holly.domain.Pessoa;
 
-public class ClienteDTO implements Serializable {
+public class PessoaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -23,11 +21,11 @@ public class ClienteDTO implements Serializable {
 	private String email;
 	
 	
-	public ClienteDTO() {
+	public PessoaDTO() {
 		
 	}
 
-	public ClienteDTO(Cliente obj) {
+	public PessoaDTO(Pessoa obj) {
 		id = obj.getId();
 		nome = obj.getNome();
 		email = obj.getEmail();

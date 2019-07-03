@@ -10,64 +10,64 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import br.com.miklus.holly.domain.Cliente;
-import br.com.miklus.holly.dto.ClienteDTO;
-import br.com.miklus.holly.repositories.ClienteRepository;
+import br.com.miklus.holly.domain.Pessoa;
+import br.com.miklus.holly.dto.PessoaDTO;
+import br.com.miklus.holly.repositories.PessoaRepository;
 import br.com.miklus.holly.services.exceptions.DateIntegrityException;
 import br.com.miklus.holly.services.exceptions.ObjectNotFoundException;
 
 @Service
-public class ClienteService {
+public class PessoaService {
 
 	@Autowired
-	private ClienteRepository repo;
+	private PessoaRepository repo;
 
-	public Cliente find(Integer id) {
-		
-		Optional<Cliente> obj = repo.findById(id);
+	public Pessoa find(Integer id) {
+
+		Optional<Pessoa> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não Encontrado! Id:" +id +" ,Tipo: "+ Cliente.class.getName()));
+				"Objeto não Encontrado! Id:" + id + " ,Tipo: " + Pessoa.class.getName()));
 	}
 
-	public Cliente insert(Cliente obj) {
+	public Pessoa insert(Pessoa obj) {
 		obj.setId(null);
 		return repo.save(obj);
 	}
 
-	public Cliente update(Cliente obj) {
-		Cliente newObj = find(obj.getId());
+	public Pessoa update(Pessoa obj) {
+		Pessoa newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
-	
+
 	public void delete(Integer id) {
 		find(id);
 		try {
 			repo.deleteById(id);
-		}
-		catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DateIntegrityException("Não é Possivel excluir porque tem entidades relacionadas");
-		}	
+		}
 	}
 
-	public List<Cliente> findAll() {
+	public List<Pessoa> findAll() {
 		return repo.findAll();
 	}
-	
-	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+
+	public Page<Pessoa> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
-		
+
 	}
-	public Cliente fromDTO(ClienteDTO objDto) {
-	
-		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null); 
-		
+
+	public Pessoa fromDTO(PessoaDTO objDto) {
+
+		return new Pessoa(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+
 	}
-	
-	private void updateData(Cliente newObj, Cliente obj) {
+
+	private void updateData(Pessoa newObj, Pessoa obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
-		
+
 	}
 }

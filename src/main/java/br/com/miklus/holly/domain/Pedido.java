@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pedido implements Serializable {
@@ -34,8 +33,8 @@ public class Pedido implements Serializable {
 	private Pagamento pagamento;
 
 	@ManyToOne
-	@JoinColumn(name="cliente_id")
-	private Cliente cliente;
+	@JoinColumn(name="pessoa_id")
+	private Pessoa pessoa;
 	
 	@ManyToOne
 	@JoinColumn(name="endereco_de_entrega_id")
@@ -47,11 +46,11 @@ public class Pedido implements Serializable {
 	public Pedido() {
 	}
 
-	public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega) {
+	public Pedido(Integer id, Date instante, Pessoa pessoa, Endereco enderecoDeEntrega) {
 		super();
 		this.id = id;
 		this.instante = instante;
-		this.cliente = cliente;
+		this.pessoa = pessoa;
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
@@ -79,12 +78,12 @@ public class Pedido implements Serializable {
 		this.pagamento = pagamento;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	public Endereco getEnderecoDeEntrega() {
